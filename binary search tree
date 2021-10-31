@@ -1,0 +1,141 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct node
+{
+	int data;
+	struct node *lchild,*rchild;
+}node;
+void insert(node*);
+void inorder(node*);
+void preorder(node*);
+void postorder(node*);
+void search(node*);
+node *new_node,*root,*temp,*parent;
+int key;
+int main()
+{
+	int choice;
+	char ans;
+	root=NULL;
+	while(1)
+	{
+		printf("\n 1.Create");
+		printf("\n 2.Search");
+		printf("\n 3.Traversal Display");
+		printf("\n 4.Exit");
+		printf("\nEnter your choice  ");
+		scanf("%d",&choice);
+		switch(choice)
+		{
+			case 1:
+				do
+				{
+					temp=(node*)malloc(sizeof(node));
+					temp->lchild=NULL;
+					temp->rchild=NULL;
+					new_node=temp;
+					printf("Enter the element  ");
+					scanf("%d",&new_node->data);
+					getchar();
+					if(root==NULL)
+						root=new_node;
+					else
+						insert(root);
+					printf("\nWant to Enter more elements(y/n)  ");
+					ans=getchar();
+				}while(ans=='y' || ans=='Y');
+				break;
+			case 2:
+				search(root);
+				break;
+			case 3:
+				if(root==NULL)
+					printf("Tree is Empty \n");
+				else
+				{
+					printf("Inorder Traversing is \n");
+					inorder(root);
+					printf("\nPreorder Traversing is \n");
+					preorder(root);
+					printf("\nPostorder Traversing is \n");	
+					postorder(root);
+					printf("\n");
+				}
+				break;
+			case 4:
+				exit(0);
+			default:
+				printf("Invalid choice \n");
+		}
+	}
+}
+void insert(node *root)
+{
+	if(new_node->data < root->data)
+	{
+		if(root->lchild==NULL)
+			root->lchild=new_node;
+		else
+			insert(root->lchild);
+	}
+	else if(new_node->data > root->data)
+		{
+		if(root->rchild==NULL)
+			root->rchild=new_node;
+		else
+			insert(root->rchild);
+	}
+}
+void search(node *temp)
+{
+	int flag=0;
+	if(temp==NULL)
+	{
+		printf("Tree is Empty \n");
+		return;
+	}
+	printf("Enter the elements to search  ");
+	scanf("%d",&key);
+	while(temp!=NULL)
+	{
+		if(temp->data==key)
+		{
+			printf("%d is found in the Binary search tree \n",key);
+			flag=1;
+			return;
+		}
+		else if(temp->data>key)
+			temp=temp->lchild;
+		else
+			temp=temp->rchild;
+	}
+	if(flag==0)
+		printf("%d is not found in binary search tree \n",key);
+}
+void inorder(node *ino)
+{
+	if(ino!=NULL)
+	{
+		inorder(ino->lchild);
+		printf("%d  ",ino->data);
+		inorder(ino->rchild);
+	}
+}
+void preorder(node *preo)
+{
+	if(preo!=NULL)
+	{
+		printf("%d  ",preo->data);
+		inorder(preo->lchild);
+		inorder(preo->rchild);
+	}
+}
+void postorder(node *psto)
+{
+	if(psto!=NULL)
+	{
+		inorder(psto->lchild);
+		inorder(psto->rchild);
+		printf("%d  ",psto->data);
+	}
+}
